@@ -1,0 +1,7 @@
+Daniel;Funchal;xxx
+David;Aveiro;aaa
+Rui;Aveiro;bbb
+Julia;Leiria;aaa
+Jose;Caldas da Rainha;aaa
+Tomas;Coimbra;ccc
+Americo;Sintra;bbb

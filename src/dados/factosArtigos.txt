@@ -1,0 +1,7 @@
+a1;rato_otico;10
+a2;teclado_s_fios;10
+a3;LCD_15;10
+a4;Portátil_zen_5013;10
+a5;Portátil_zen_5050;10
+a6;pen_512Mb_blue;10
+a7;disco_externo_2Gb;10
