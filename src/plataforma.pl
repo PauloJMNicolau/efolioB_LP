@@ -84,7 +84,8 @@ gravar_dados :-
     escrever_ficheiro_artigo,
     escrever_ficheiro_cliente,
     escrever_ficheiro_inventario,
-    escrever_ficheiro_vendas.
+    escrever_ficheiro_vendas,
+    halt.
 
 %Cria as estruturas dos Factos de Clientes
 criar_estrutura_cliente([]).
@@ -237,24 +238,26 @@ artigo_verificar_abaixo_min_alerta(Artigo):-
 %Validar venda ao Cliente
 venda_validar_artigo_cliente(Cliente, Artigo, Quantidade):-
     inventario(Artigo,X),
-    Quantidade =< X, !,
-    cliente(Cliente,_, "aaa"), !.
+    Quantidade =< X,
+    cliente(Cliente,_, "aaa"), true;
+    write("Não são cumpridos os requisitos para venda de produtos"),
+    fail.
 
 %Realizar Venda de artigo ao cliente na quantidade indicada pelo utilizador
 venda_artigo_cliente :-
+    seeing(Input),
     write("Qual o cliente: "),
-    read(Cliente),
+    read_string(Input, ".", "\n", _, Cliente),
     write("Qual o artigo: "),
-    read(Artigo_Nome),
-    atom_string(Artigo_Nome,Nome),
-    artigo(X,Nome,_),
+    read_string(Input, ".", "\n",_ ,Nome),
     write("Qual a quantidade: "),
     read(Quantidade),
-    venda_validar_artigo_cliente(Cliente,X,Quantidade), !,
+    artigo(X,Nome,_),
+    venda_validar_artigo_cliente(Cliente,X,Quantidade)->
     inventario(X,Stock),
     Q is Stock - Quantidade,
     inventario_atualiza_artigo(X,Q),
-    assertz(vendas(Cliente,X,Quantidade)).
+    assertz(vendas(Cliente,X,Quantidade)); fail.
 
 %Devolver Quantidade ou adicionar artigo no inventário
 inventario_quantidade_stock(Artigo, Quantidade):-
