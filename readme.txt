@@ -13,15 +13,24 @@ $  dnf install pl
 * Compilação *
 **************
 
-Para compilar o programa basta escrever na linha de comandos, no diretorio do ficheiro, o seguinte comando:
+Para compilar o programa basta escrever na linha de comandos, no diretorio do ficheiro, um dos seguintes comandos:
 
-$   swipl -s plataforma.pl
+
+$   swipl -o plataformaVendas -c plataforma.pl           //Compilador - Cria Ficheiro Executável com base no código-fonte
+$   swipl -s plataforma.pl                               //Interpretador - Executa ficheiro de código-fonte diretamente
 
 **************
 *  Execução  *
 **************
 
-Após a execução do comando de compilação, o programa será carregado no interpretador de Prolog, preparando 
+Para executar o programa na versão compilada basta seguir os seguintes passos:
+
+$   ./../plataformaVendas
+
+Após a execução do comando anterior o programa irá executar com os dados carregados e mantem o interpretador aberto para 
+receber comandos.
+
+Se executar o comando do Interpretador o programa será carregado no interpretador de Prolog, preparando 
 os factos com os dados que leu dos 4 ficheiros na pasta "dados", mantendo no final, o interpretador aberto
 para receber comandos do utilizador.
 

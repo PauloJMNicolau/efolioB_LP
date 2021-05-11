@@ -4,6 +4,9 @@
 :- dynamic inventario/2.
 :- dynamic vendas/3.
 
+%Iniciar o Programa no main
+:- initialization(main).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %   Produzir os factos  %
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,73 +14,72 @@
 %Ler Ficheiro de Factos
 ler_ficheiro(Ficheiro, Dados) :-
     setup_call_cleanup(
-        open(Ficheiro, read, In),    %Abrir o Ficheiro
-        ler_linhas(In, Dados),       %Ler as Linhas
-        close(In) 
-    ).
+        open(Ficheiro, read, In),                               %Abrir o Ficheiro
+        ler_linhas(In, Dados),                                  %Ler as Linhas
+        close(In)).                                             %Fechar o ficheiro
 
 %Ler as Linhas do Ficheiro e Converter numa Lista de Linhas
 ler_linhas(In, Linhas) :-
-    read_string(In, _, Linha),               %Ler Linhas
-    split_string(Linha, "\n", "", Linhas).  %Separar Linhas por caracter de mudança de linha 
+    read_string(In, _, Linha),                                  %Ler Linhas todas como uma unica string
+    split_string(Linha, "\n", "", Linhas).                      %Separar Linhas por caracter de mudança de linha 
 
 %Gravar dados no ficheiro de clientes
 escrever_ficheiro_cliente:-
-    findall([X,Y,Z], cliente(X,Y,Z), Dados),
-    open('dados/factosCliente.txt', write, Out),
-    processar_lista_cliente(Out, Dados),
-    close(Out).
+    findall([X,Y,Z], cliente(X,Y,Z), Dados),                    %Procurar todos os factos e colocar numa lista
+    open('dados/factosCliente.txt', write, Out),                %Abrir ficheiro para escrita
+    processar_lista_cliente(Out, Dados),                        %Escrever dados no ficheiro
+    close(Out).                                                 %Fechar o ficheiro
 
 %Processar os dados do cliente a escrever no ficheiro
 processar_lista_cliente(Output, Dados):-
-    [H|T] = Dados,
-    [X,Y,Z] = H,
-    format(Output,'~s;~s;~s', [X,Y,Z]),
-    T \= [],
-    write(Output, "\n"),
-    processar_lista_cliente(Output, T),!;
-    !.
+    [H|T] = Dados,                                              %Separa a cabeça da lista do resto da lista
+    [X,Y,Z] = H,                                                %Obtem os dados na cabeça
+    format(Output,'~s;~s;~s', [X,Y,Z]),                         %Formata a string e escreve no ficheiro
+    T \= [],                                                    %Verifica se a cauda da lista não está vazia
+    write(Output, "\n"),                                        %Escreve uma mudança de linha no ficheiro
+    processar_lista_cliente(Output, T),!;                       %Executa Recursivamente com o resto da lista
+    !.                                                          %Termina a execução por ter chegado ao fim da lista
 
 %Gravar dados no ficheiro de artigos
 escrever_ficheiro_artigo:-
-    findall([X,Y,Z], artigo(X,Y,Z), Dados),
-    open('dados/factosArtigos.txt', write, Out),
-    processar_lista_artigo_venda(Out, Dados),
-    close(Out).
+    findall([X,Y,Z], artigo(X,Y,Z), Dados),                     %Procurar todos os factos e colocar numa lista
+    open('dados/factosArtigos.txt', write, Out),                %Abrir ficheiro para escrita
+    processar_lista_artigo_venda(Out, Dados),                   %Escrever dados no ficheiro
+    close(Out).                                                 %Fechar o ficheiro
 
 %Processar os dados dos artigos e das vendas a escrever no ficheiro
 processar_lista_artigo_venda(Output, Dados):-
-    [H|T] = Dados,
-    [X,Y,Z] = H,
-    format(Output,'~s;~s;~d', [X,Y,Z]),
-    T \= [],
-    write(Output, "\n"),
-    processar_lista_artigo_venda(Output, T),!;
-    !.
+    [H|T] = Dados,                                              %Separa a cabeça da lista do resto da lista
+    [X,Y,Z] = H,                                                %Obtem os dados na cabeça
+    format(Output,'~s;~s;~d', [X,Y,Z]),                         %Formata a string e escreve no ficheiro
+    T \= [],                                                    %Verifica se a cauda da lista não está vazia
+    write(Output, "\n"),                                        %Escreve uma mudança de linha no ficheiro
+    processar_lista_artigo_venda(Output, T),!;                  %Executa Recursivamente com o resto da lista
+    !.                                                          %Termina a execução por ter chegado ao fim da lista
 
 %Gravar dados no ficheiro de inventario
 escrever_ficheiro_inventario:-
-    inventario_relatorio(Dados),
-    open('dados/factosInventarios.txt', write, Out),
-    processar_lista_inventario(Out, Dados),
-    close(Out).
+    inventario_relatorio(Dados),                                %Procurar todos os factos e colocar numa lista
+    open('dados/factosInventario.txt', write, Out),             %Abrir ficheiro para escrita
+    processar_lista_inventario(Out, Dados),                     %Escrever dados no ficheiro
+    close(Out).                                                 %Fechar o ficheiro
 
 %Processar os dados do cliente a escrever no ficheiro
 processar_lista_inventario(Output, Dados):-
-    [H|T] = Dados,
-    [X,Y] = H,
-    format(Output,'~s;~d;', [X,Y]),
-    T \= [],
-    write(Output, "\n"),
-    processar_lista_inventario(Output, T),!;
-    !.
+    [H|T] = Dados,                                              %Separa a cabeça da lista do resto da lista
+    [X,Y] = H,                                                  %Obtem os dados na cabeça
+    format(Output,'~s;~d;', [X,Y]),                             %Formata a string e escreve no ficheiro
+    T \= [],                                                    %Verifica se a cauda da lista não está vazia
+    write(Output, "\n"),                                        %Escreve uma mudança de linha no ficheiro
+    processar_lista_inventario(Output, T),!;                    %Executa Recursivamente com o resto da lista
+    !.                                                          %Termina a execução por ter chegado ao fim da lista
 
 %Gravar dados no ficheiro de clientes
 escrever_ficheiro_vendas:-
-    findall([X,Y,Z], vendas(X,Y,Z), Dados),
-    open('dados/factosVendas.txt', write, Out),
-    processar_lista_artigo_venda(Out, Dados),
-    close(Out).
+    findall([X,Y,Z], vendas(X,Y,Z), Dados),                     %Procurar todos os factos e colocar numa lista
+    open('dados/factosVendas.txt', write, Out),                 %Abrir ficheiro para escrita
+    processar_lista_artigo_venda(Out, Dados),                   %Escrever dados no ficheiro
+    close(Out).                                                 %Fechar o ficheiro
 
 %Guardar os dados no ficheiro de texto
 gravar_dados :-
@@ -85,7 +87,7 @@ gravar_dados :-
     escrever_ficheiro_cliente,
     escrever_ficheiro_inventario,
     escrever_ficheiro_vendas,
-    halt.
+    halt.                                                       %Termina o Programa
 
 %Cria as estruturas dos Factos de Clientes
 criar_estrutura_cliente([]).
@@ -128,6 +130,10 @@ criar_estrutura_vendas(Dados):-
 
 %Executar o Programa
 main :-
+    retractall(cliente(_,_,_)),
+    retractall(artigo(_,_,_)),
+    retractall(inventario(_,_)),
+    retractall(vendas(_,_,_)),
     ler_ficheiro('dados/factosCliente.txt',Clientes),
     ler_ficheiro('dados/factosArtigos.txt',Artigos),
     ler_ficheiro('dados/factosInventario.txt',Inventario),
@@ -137,8 +143,7 @@ main :-
     criar_estrutura_inventario(Inventario),
     criar_estrutura_vendas(Vendas).
 
-%Iniciar o Programa no main
-:- initialization(main).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              Regras               %
@@ -237,7 +242,7 @@ artigo_verificar_abaixo_min_alerta(Artigo):-
 
 %Validar venda ao Cliente
 venda_validar_artigo_cliente(Cliente, Artigo, Quantidade):-
-    inventario(Artigo,X),
+    inventario_quantidade_stock(Artigo,X),
     Quantidade =< X,
     cliente(Cliente,_, "aaa"), true;
     write("Não são cumpridos os requisitos para venda de produtos"),
@@ -257,6 +262,7 @@ venda_artigo_cliente :-
     inventario(X,Stock),
     Q is Stock - Quantidade,
     inventario_atualiza_artigo(X,Q),
+    artigo_verificar_abaixo_min_alerta(X),
     assertz(vendas(Cliente,X,Quantidade)); fail.
 
 %Devolver Quantidade ou adicionar artigo no inventário
