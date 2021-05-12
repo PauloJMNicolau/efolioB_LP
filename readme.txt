@@ -25,7 +25,7 @@ $   swipl -s plataforma.pl                               //Interpretador - Execu
 
 Para executar o programa na versão compilada basta seguir os seguintes passos:
 
-$   ./../plataformaVendas
+$   ./plataformaVendas
 
 Após a execução do comando anterior o programa irá executar com os dados carregados e mantem o interpretador aberto para 
 receber comandos.
@@ -71,3 +71,8 @@ Estão definidos os seguintes predicados:
 
 Para terminar o programa basta executar o predicado gravar_dados/0 que irá guardar os dados nos ficheiros 
 correspondentes e fechar o interpretador de Prolog.
+
+É necessário possuir o diretório "dados" (que possui os ficheiros lidos pelo programa) no mesmo diretorio do arquivo de
+código-fonte ("plataforma.pl") na execução em Interpretador, ou do executável ("plataformaVendas") na versão Compilador 
+para que o programa execute sem erros. Os ficheiros de dados necessitam estar no formato e com o mesmo nome dos ficheiros
+incluidos como ficheiros de teste.
